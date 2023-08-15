@@ -90,7 +90,7 @@ mmcore_source_globs = [
     'mmCoreAndDevices/MMCore/LibraryInfo/*.cpp',
     'mmCoreAndDevices/MMCore/LoadableModules/*.cpp',
     'mmCoreAndDevices/MMCore/Logging/*.cpp',
-    'mmCoreAndDevices/MDAEngine/*.cpp',
+    'mmCoreAndDevices/MMCore/MDAEngine/*.cpp',
 ]
 
 mmcore_sources = []
@@ -154,7 +154,6 @@ mmcore_extension = setuptools.Extension(
         '-builtin',
         '-I./mmCoreAndDevices/MMDevice',
         '-I./mmCoreAndDevices/MMCore',
-        '-I./mmCoreAndDevices/MDAEngine',
     ],
     include_dirs=[
         numpy.get_include(),

@@ -2,6 +2,5 @@ include pymmcore/py.typed
 recursive-include * *.pyi
 recursive-include mmCoreAndDevices/MMDevice *.h *.cpp
 recursive-include mmCoreAndDevices/MMCore *.h *.cpp
-recursive-include mmCoreAndDevices/MDAEngine *.h *.cpp
 prune mmCoreAndDevices/MMDevice/unittest
 prune mmCoreAndDevices/MMCore/unittest
