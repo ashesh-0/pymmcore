@@ -218,6 +218,7 @@ PyObject *setSLMImage_pywrap(const char* slmLabel, char *pixels, int receivedLen
 #include "../mmCoreAndDevices/MMCore/MMCore.h"
 #include "../mmCoreAndDevices/MMCore/MDAEngine/MDAPosition.h"
 #include "../mmCoreAndDevices/MMCore/MDAEngine/MDAEvent.h"
+#include "../mmCoreAndDevices/MMCore/MDAEngine/MMRunner.h"
 %}
 
 // Exception handling. Tranditionally, MMCore uses exception specifications
@@ -332,3 +333,4 @@ namespace std {
 %include "../mmCoreAndDevices/MMCore/MMEventCallback.h"
 %include "../mmCoreAndDevices/MMCore/MDAEngine/MDAPosition.h"
 %include "../mmCoreAndDevices/MMCore/MDAEngine/MDAEvent.h"
+%include "../mmCoreAndDevices/MMCore/MDAEngine/MMRunner.h"
