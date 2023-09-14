@@ -13,5 +13,5 @@ position.setZ(2)
 action = AcquireImage
 mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
 runner = CMMRunner()
-runner.loadSystemConfiguration()
+runner.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
 runner.execEvent(mdaevent)
