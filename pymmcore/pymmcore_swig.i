@@ -315,6 +315,7 @@ namespace std {
     %template(StrVector)    vector<string>;
     %template(pair_ss)      pair<string, string>;
     %template(StrMap)       map<string, string>;
+    %template(StrIntMap)    map<string, int>;
 }
 
 // output arguments
