@@ -29,7 +29,6 @@ class Runner(CMMRunner):
         return th
 
 runner = Runner(core)
-print("prepared to run")
 output = runner.run_async(EventVector([mdaevent]))
 print('FrameReady:', runner.getEventState(0) == FrameReady)
 output.join()
