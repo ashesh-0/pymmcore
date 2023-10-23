@@ -11,12 +11,15 @@ position = Position()
 position.setZ(2)
 action = AcquireImage
 mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
-runner = CMMRunner()
-runner.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
+core = CMMCore()
+core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
+runner = CMMRunner(core)
 runner.prepareToRun()
 print("prepared to run")
-output = runner.runEvent(mdaevent)
+output = runner.run(EventVector([mdaevent]))
+
 print('FrameReady:', runner.getEventState(0) == FrameReady)
+
 import matplotlib.pyplot as plt
 plt.imshow(output)
 plt.show()
