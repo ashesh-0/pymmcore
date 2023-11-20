@@ -1,6 +1,6 @@
 from pymmcore import CMMRunner, CMMCore
 # from pymmcore import *
-from pymmcore import Position,AcquireImage, MDAEvent, Channel, StrIntMap, EventVector, FrameReady
+from pymmcore import Position,AcquireImage, MDAEvent, Channel, StrIntMap, EventVector, FrameReady, Paused
 from threading import RLock, Thread
 
 from pymmcore import CMMCore, CMMRunner
@@ -122,32 +122,39 @@ def test_setting_exposure():
     del core 
     del runner
 
-def test_runner_waits():
+
+def test_pause_logic():
+    """
+    Test that we can pause the runner and that it will wait for the pause to be released before continuing.
+    """
     core = CMMCore()
     core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
     runner = Runner(core)   
-    # runner = _get_runner()
-    for global_index in range(1):
-        index = StrIntMap({'t':4,'c':0,'z':5})
-        channel = Channel('FITC','channel')
-        exposure = 50
-        min_start_time = 0
-        keep_shutter_open = False
+    index = StrIntMap({'t':4,'c':0,'z':5})
+    channel = Channel('FITC','channel')
+    min_start_time = 0.2
+    keep_shutter_open = False
+    global_index = 0
+    position = Position()
+    position.setZ(2)
+    position.setX(955)
+    position.setY(123)
+    
+    exposure = 50
 
-        position = Position()
-        position.setZ(2)
-        action = AcquireImage
-        mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
+    action = AcquireImage
+    mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
+    output = runner.run_async(EventVector([mdaevent]))
+    sleep(0.1)
+    print(runner.togglePause(mdaevent))
+    assert runner.getEventState(0) == Paused
+    sleep(min_start_time + 1)
+    runner.togglePause(mdaevent)
+    output.join()
 
-
-        output = runner.run_async(EventVector([mdaevent]))
-        print('FrameReady:', runner.getEventState(0) == FrameReady)
-        output.join()
-        print('FrameReady:', runner.getEventState(0) == FrameReady)
-        img = runner.getEventImage(0)
+    assert runner.getEventState(0) == FrameReady
     del core 
     del runner
-
     # img = runner.getEventImage(0)
 
 # def test_wait_time():
