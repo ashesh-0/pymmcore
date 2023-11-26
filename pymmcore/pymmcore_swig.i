@@ -30,7 +30,7 @@
 %module (package="pymmcore", directors="1", threads="1") pymmcore_swig
 
 %feature("director") MMEventCallback;
-// %feature("director") EventDataManager;
+%feature("director") EventDataManager;
 %feature("autodoc", "3");
 
 %include exception.i
