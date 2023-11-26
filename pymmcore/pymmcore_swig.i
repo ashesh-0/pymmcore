@@ -220,6 +220,7 @@ PyObject *setSLMImage_pywrap(const char* slmLabel, char *pixels, int receivedLen
 #include "../mmCoreAndDevices/MMCore/MDAEngine/MDAPosition.h"
 #include "../mmCoreAndDevices/MMCore/MDAEngine/MDAEvent.h"
 #include "../mmCoreAndDevices/MMCore/MDAEngine/BaseEventNotifier.h"
+#include "../mmCoreAndDevices/MMCore/MDAEngine/EventMetaData.h"
 #include "../mmCoreAndDevices/MMCore/MDAEngine/EventDataManager.h"
 #include "../mmCoreAndDevices/MMCore/MDAEngine/MMRunner.h"
 
@@ -342,4 +343,5 @@ namespace std {
 %include "../mmCoreAndDevices/MMCore/MDAEngine/MDAEvent.h"
 %include "../mmCoreAndDevices/MMCore/MDAEngine/BaseEventNotifier.h"
 %include "../mmCoreAndDevices/MMCore/MDAEngine/EventDataManager.h"
+%include "../mmCoreAndDevices/MMCore/MDAEngine/EventMetaData.h"
 %include "../mmCoreAndDevices/MMCore/MDAEngine/MMRunner.h"

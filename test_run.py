@@ -14,9 +14,10 @@ class Runner(CMMRunner):
         return th
 
 class Notifier(EventDataManager):
-    def notifyRegistered(self, event):
+    def notifyRegistered(self, event, packet):
         print('Notify registered')
-        return super().notifyRegistered(event)
+        return super().notifyRegistered(event, packet)
+    
     
     def notifyStart(self, event):
         print('Notify start')
@@ -54,7 +55,8 @@ for global_index in range(1):
     position.setZ(2)
     action = AcquireImage
     mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
-
+    packet = EventMetaData(global_index, Registered)
+    notifier.notifyRegistered(mdaevent, packet)
 
     output = runner.run_async(EventVector([mdaevent]))
     print('FrameReady:', runner.getEventState(0) == FrameReady)
