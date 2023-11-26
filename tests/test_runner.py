@@ -1,6 +1,6 @@
-from pymmcore import CMMRunner, CMMCore
+from pymmcore import CMMRunner, CMMCore, EventDataManager, EventMetaData
 # from pymmcore import *
-from pymmcore import Position,AcquireImage, MDAEvent, Channel, StrIntMap, EventVector, FrameReady, Paused
+from pymmcore import Position,AcquireImage, MDAEvent, Channel, StrIntMap, EventVector, FrameReady, Paused,Registered
 from threading import RLock, Thread
 
 from pymmcore import CMMCore, CMMRunner
@@ -22,7 +22,8 @@ class Runner(CMMRunner):
 def test_runner_executes_multiple_events():
     core = CMMCore()
     core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
-    runner = Runner(core)   
+    notifier = EventDataManager()
+    runner = Runner(core, notifier)   
     for global_index in range(10):
         index = StrIntMap({'t':4,'c':0,'z':5})
         channel = Channel('FITC','channel')
@@ -35,19 +36,21 @@ def test_runner_executes_multiple_events():
         action = AcquireImage
         mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
 
-
+        packet = EventMetaData(global_index, Registered)
+        notifier.notifyRegistered(mdaevent, packet)
         output = runner.run_async(EventVector([mdaevent]))
-        print('FrameReady:', runner.getEventState(0) == FrameReady)
+        print('FrameReady:', runner.getEventState(global_index) == FrameReady)
         output.join()
-        print('FrameReady:', runner.getEventState(0) == FrameReady)
-        img = runner.getEventImage(0)
+        print('FrameReady:', runner.getEventState(global_index) == FrameReady)
+        img = runner.getEventImage(global_index)
     del core 
     del runner
 
 def test_wait_times_for_events():
     core = CMMCore()
     core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
-    runner = Runner(core)
+    notifier = EventDataManager()
+    runner = Runner(core, notifier)   
     t0 = perf_counter()
     timestamps = []
     for global_index in range(10):
@@ -61,12 +64,13 @@ def test_wait_times_for_events():
         position.setZ(2)
         action = AcquireImage
         mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
-
+        packet = EventMetaData(global_index, Registered)
+        notifier.notifyRegistered(mdaevent, packet)
         output = runner.run_async(EventVector([mdaevent]))
-        print('FrameReady:', runner.getEventState(0) == FrameReady)
+        print('FrameReady:', runner.getEventState(global_index) == FrameReady)
         output.join()
-        print('FrameReady:', runner.getEventState(0) == FrameReady)
-        img = runner.getEventImage(0)
+        print('FrameReady:', runner.getEventState(global_index) == FrameReady)
+        img = runner.getEventImage(global_index)
         timestamps.append(perf_counter() - t0)
         assert timestamps[-1] >= min_start_time*(1+global_index)
     del core 
@@ -75,7 +79,8 @@ def test_wait_times_for_events():
 def test_setting_positions():
     core = CMMCore()
     core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
-    runner = Runner(core)   
+    notifier = EventDataManager()
+    runner = Runner(core, notifier)   
     index = StrIntMap({'t':4,'c':0,'z':5})
     channel = Channel('FITC','channel')
     exposure = 50
@@ -91,6 +96,8 @@ def test_setting_positions():
 
     action = AcquireImage
     mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
+    packet = EventMetaData(global_index, Registered)
+    notifier.notifyRegistered(mdaevent, packet)
     runner.setEventPosition(mdaevent)
     assert tuple([int(x) for x in core.getXYPosition()]) == (955, 123)
     runner.setEventZ(mdaevent)
@@ -102,7 +109,8 @@ def test_setting_positions():
 def test_setting_exposure():
     core = CMMCore()
     core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
-    runner = Runner(core)   
+    notifier = EventDataManager()
+    runner = Runner(core, notifier)   
     index = StrIntMap({'t':4,'c':0,'z':5})
     channel = Channel('FITC','channel')
     min_start_time = 0.1
@@ -117,6 +125,8 @@ def test_setting_exposure():
 
     action = AcquireImage
     mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
+    packet = EventMetaData(global_index, Registered)
+    notifier.notifyRegistered(mdaevent, packet)
     runner.setEventExposure(mdaevent)
     assert core.getExposure() == exposure
     del core 
@@ -129,7 +139,8 @@ def test_pause_logic():
     """
     core = CMMCore()
     core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
-    runner = Runner(core)   
+    notifier = EventDataManager()
+    runner = Runner(core, notifier)   
     index = StrIntMap({'t':4,'c':0,'z':5})
     channel = Channel('FITC','channel')
     min_start_time = 0.2
@@ -144,6 +155,8 @@ def test_pause_logic():
 
     action = AcquireImage
     mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
+    packet = EventMetaData(global_index, Registered)
+    notifier.notifyRegistered(mdaevent, packet)
     output = runner.run_async(EventVector([mdaevent]))
     sleep(0.1)
     print(runner.togglePause(mdaevent))
