@@ -1,6 +1,6 @@
 from pymmcore import CMMRunner, CMMCore, EventDataManager, EventMetaData
 # from pymmcore import *
-from pymmcore import Position,AcquireImage, MDAEvent, Channel, StrIntMap, EventVector, FrameReady, Paused,Registered
+from pymmcore import Position,AcquireImage, MDAEvent, Channel, StrIntMap, EventVector, FrameReady, Paused,Registered, Canceled
 from threading import RLock, Thread
 
 from pymmcore import CMMCore, CMMRunner
@@ -168,6 +168,38 @@ def test_pause_logic():
     assert runner.getEventState(0) == FrameReady
     del core 
     del runner
+
+def test_cancel_logic():
+    core = CMMCore()
+    core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
+    notifier = EventDataManager()
+    runner = Runner(core, notifier)   
+    index = StrIntMap({'t':4,'c':0,'z':5})
+    channel = Channel('FITC','channel')
+    min_start_time = 1.0
+    keep_shutter_open = False
+    global_index = 0
+    position = Position()
+    position.setZ(2)
+    position.setX(955)
+    position.setY(123)
+    
+    exposure = 50
+
+    action = AcquireImage
+    mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
+    packet = EventMetaData(global_index, Registered)
+    notifier.notifyRegistered(mdaevent, packet)
+    output = runner.run_async(EventVector([mdaevent]))
+    sleep(0.1)
+    print(runner.cancel())
+    assert runner.getEventState(0) in [Canceled, Registered]
+    output.join()
+
+    assert runner.getEventState(0) == Canceled
+    del core 
+    del runner
+
     # img = runner.getEventImage(0)
 
 # def test_wait_time():
