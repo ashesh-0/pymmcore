@@ -43,7 +43,6 @@ core = CMMCore()
 core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
 notifier = Notifier()
 runner = Runner(core, notifier)
-packets = []
 for global_index in range(3):
     print('')
     print('')
@@ -58,7 +57,6 @@ for global_index in range(3):
     action = AcquireImage
     mdaevent = MDAEvent(index, channel, exposure, min_start_time, position, action, global_index, keep_shutter_open)
     packet = EventMetaData(global_index, Registered)
-    packets.append(packet)
     notifier.notifyRegistered(mdaevent, packet)
 
     output = runner.run_async(EventVector([mdaevent]))
