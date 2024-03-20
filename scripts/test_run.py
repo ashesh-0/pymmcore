@@ -1,6 +1,7 @@
 from pymmcore import Position,AcquireImage, MDAEvent, Channel
 from pymmcore import *
 from threading import RLock, Thread
+from time import sleep
 
 class Runner(CMMRunner):
     def run_async(self, events):
@@ -43,7 +44,7 @@ core = CMMCore()
 core.loadSystemConfiguration('/home/ubuntu/ashesh/software_installed/MMConfig_demo.cfg')
 notifier = Notifier()
 runner = Runner(core, notifier)
-for global_index in range(3):
+for global_index in range(5):
     print('')
     print('')
     index = StrIntMap({'t':4,'c':0,'z':5})
@@ -60,7 +61,21 @@ for global_index in range(3):
     notifier.notifyRegistered(mdaevent, packet)
 
     output = runner.run_async(EventVector([mdaevent]))
-    print('FrameReady:', runner.getEventState(global_index) == FrameReady)
+    print('Is FrameReady for ', global_index, ": ", runner.getEventState(global_index) == FrameReady)
+
+    if global_index == 3:
+        runner.togglePause(mdaevent)
+        sleep(5)
+        print('Is FrameReady for ', global_index, ": ", runner.getEventState(global_index) == FrameReady)
+        runner.togglePause(mdaevent)
+
+    elif global_index == 4:
+        runner.cancel()
+    
     output.join()
-    print('FrameReady:', runner.getEventState(global_index) == FrameReady)
-    # img = runner.getEventImage(0)
+    print('Is FrameReady for ', global_index, ": ", runner.getEventState(global_index) == FrameReady, end=' ')
+    if runner.getEventState(global_index) == FrameReady:
+        img = runner.getEventImage(global_index)
+        print(img.shape)
+    else:
+        print('')
