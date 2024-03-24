@@ -1,4 +1,0 @@
-[submodule "mmCoreAndDevices"]
-	path = mmCoreAndDevices
-	url = git@asheshGIT:ashesh-0/mmCoreAndDevices.git
-	branch = main
