@@ -1,3 +1,4 @@
+git submodule update --init --recursive
 pip uninstall pymmcore
 rm -rf tmp/
 python setup.py sdist

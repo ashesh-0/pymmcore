@@ -71,9 +71,9 @@ windows_defines = [
 
 
 mmdevice_build_info = {
-    'sources': glob.glob('mmCoreAndDevices/MMDevice/*.cpp'),
+    'sources': glob.glob('c-mda-engine/src/mmCoreAndDevices/MMDevice/*.cpp'),
     'include_dirs': [
-        'mmCoreAndDevices/MMDevice',
+        'c-mda-engine/src/mmCoreAndDevices/MMDevice',
     ],
     'macros': [
         ('MODULE_EXPORTS', None),
@@ -85,12 +85,13 @@ if is_windows:
 
 
 mmcore_source_globs = [
-    'mmCoreAndDevices/MMCore/*.cpp',
-    'mmCoreAndDevices/MMCore/Devices/*.cpp',
-    'mmCoreAndDevices/MMCore/LibraryInfo/*.cpp',
-    'mmCoreAndDevices/MMCore/LoadableModules/*.cpp',
-    'mmCoreAndDevices/MMCore/Logging/*.cpp',
-    'mmCoreAndDevices/MMCore/MDAEngine/*.cpp',
+    'c-mda-engine/src/mmCoreAndDevices/MMCore/*.cpp',
+    'c-mda-engine/src/mmCoreAndDevices/MMCore/Devices/*.cpp',
+    'c-mda-engine/src/mmCoreAndDevices/MMCore/LibraryInfo/*.cpp',
+    'c-mda-engine/src/mmCoreAndDevices/MMCore/LoadableModules/*.cpp',
+    'c-mda-engine/src/mmCoreAndDevices/MMCore/Logging/*.cpp',
+    'c-mda-engine/src/MDAEngine/*.cpp',
+
 ]
 
 mmcore_sources = []
@@ -152,17 +153,16 @@ mmcore_extension = setuptools.Extension(
         '-c++',
         '-py3',
         '-builtin',
-        '-I./mmCoreAndDevices/MMDevice',
-        '-I./mmCoreAndDevices/MMCore',
+        '-I./c-mda-engine/src/mmCoreAndDevices/MMDevice',
+        '-I./c-mda-engine/src/mmCoreAndDevices/MMCore',
+        '-I./c-mda-engine/src/MDAEngine',
     ],
     include_dirs=[
-        numpy.get_include(),
-    ],
+        numpy.get_include()    
+        ],
     libraries=mmcore_libraries,
     define_macros=mmcore_defines,
 )
-
-
 # See maintainer notes!
 python_req = '>=3.6'
 numpy_req = '>=1.12.0'

@@ -211,18 +211,18 @@ PyObject *setSLMImage_pywrap(const char* slmLabel, char *pixels, int receivedLen
 
 %{
 #define SWIG_FILE_WITH_INIT
-#include "../mmCoreAndDevices/MMDevice/MMDeviceConstants.h"
-#include "../mmCoreAndDevices/MMCore/Error.h"
-#include "../mmCoreAndDevices/MMCore/Configuration.h"
-#include "../mmCoreAndDevices/MMDevice/ImageMetadata.h"
-#include "../mmCoreAndDevices/MMCore/MMEventCallback.h"
-#include "../mmCoreAndDevices/MMCore/MMCore.h"
-#include "../mmCoreAndDevices/MMCore/MDAEngine/MDAPosition.h"
-#include "../mmCoreAndDevices/MMCore/MDAEngine/MDAEvent.h"
-#include "../mmCoreAndDevices/MMCore/MDAEngine/BaseEventNotifier.h"
-#include "../mmCoreAndDevices/MMCore/MDAEngine/EventMetaData.h"
-#include "../mmCoreAndDevices/MMCore/MDAEngine/EventDataManager.h"
-#include "../mmCoreAndDevices/MMCore/MDAEngine/MMRunner.h"
+#include "../c-mda-engine/src/mmCoreAndDevices/MMDevice/MMDeviceConstants.h"
+#include "../c-mda-engine/src/mmCoreAndDevices/MMCore/Error.h"
+#include "../c-mda-engine/src/mmCoreAndDevices/MMCore/Configuration.h"
+#include "../c-mda-engine/src/mmCoreAndDevices/MMDevice/ImageMetadata.h"
+#include "../c-mda-engine/src/mmCoreAndDevices/MMCore/MMEventCallback.h"
+#include "../c-mda-engine/src/mmCoreAndDevices/MMCore/MMCore.h"
+#include "../c-mda-engine/src/MDAEngine/MDAPosition.h"
+#include "../c-mda-engine/src/MDAEngine/MDAEvent.h"
+#include "../c-mda-engine/src/MDAEngine/BaseEventNotifier.h"
+#include "../c-mda-engine/src/MDAEngine/EventMetaData.h"
+#include "../c-mda-engine/src/MDAEngine/EventDataManager.h"
+#include "../c-mda-engine/src/MDAEngine/MMRunner.h"
 
 %}
 
@@ -333,15 +333,15 @@ namespace std {
 %apply int &OUTPUT { int &xSize };
 %apply int &OUTPUT { int &ySize };
 
-%include "../mmCoreAndDevices/MMDevice/MMDeviceConstants.h"
-%include "../mmCoreAndDevices/MMCore/Error.h"
-%include "../mmCoreAndDevices/MMCore/Configuration.h"
-%include "../mmCoreAndDevices/MMCore/MMCore.h"
-%include "../mmCoreAndDevices/MMDevice/ImageMetadata.h"
-%include "../mmCoreAndDevices/MMCore/MMEventCallback.h"
-%include "../mmCoreAndDevices/MMCore/MDAEngine/MDAPosition.h"
-%include "../mmCoreAndDevices/MMCore/MDAEngine/MDAEvent.h"
-%include "../mmCoreAndDevices/MMCore/MDAEngine/BaseEventNotifier.h"
-%include "../mmCoreAndDevices/MMCore/MDAEngine/EventDataManager.h"
-%include "../mmCoreAndDevices/MMCore/MDAEngine/EventMetaData.h"
-%include "../mmCoreAndDevices/MMCore/MDAEngine/MMRunner.h"
+%include "../c-mda-engine/src/mmCoreAndDevices/MMDevice/MMDeviceConstants.h"
+%include "../c-mda-engine/src/mmCoreAndDevices/MMCore/Error.h"
+%include "../c-mda-engine/src/mmCoreAndDevices/MMCore/Configuration.h"
+%include "../c-mda-engine/src/mmCoreAndDevices/MMCore/MMCore.h"
+%include "../c-mda-engine/src/mmCoreAndDevices/MMDevice/ImageMetadata.h"
+%include "../c-mda-engine/src/mmCoreAndDevices/MMCore/MMEventCallback.h"
+%include "../c-mda-engine/src/MDAEngine/MDAPosition.h"
+%include "../c-mda-engine/src/MDAEngine/MDAEvent.h"
+%include "../c-mda-engine/src/MDAEngine/BaseEventNotifier.h"
+%include "../c-mda-engine/src/MDAEngine/EventDataManager.h"
+%include "../c-mda-engine/src/MDAEngine/EventMetaData.h"
+%include "../c-mda-engine/src/MDAEngine/MMRunner.h"
